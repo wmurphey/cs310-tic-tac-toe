@@ -5,6 +5,7 @@ public class TicTacToeModel {
     private Mark[][] board; /* Game board */
     private boolean xTurn;  /* True if X is current player */
     private int width;      /* Size of game board */
+    private int counter = 0;
     
     /* ENUM TYPE DEFINITIONS */
     
@@ -74,7 +75,14 @@ public class TicTacToeModel {
         board = new Mark[width][width];
 
         /* Initialize board by filling every square with empty marks */
-        
+        for (int row = 0; row < width; ++row) {
+
+			for (int col = 0; col < width; ++col) {
+
+				board[row][col] = Mark.EMPTY;
+
+			}
+		}
         // INSERT YOUR CODE HERE
         
     }
@@ -88,28 +96,53 @@ public class TicTacToeModel {
            other player before returning TRUE.  Otherwise, return FALSE. */
         
         // INSERT YOUR CODE HERE
-        
-        return false; // remove this line later!
-        
+
+        if (isValidSquare(row, col) == true){
+            if(isSquareMarked(row, col) == false){
+                if (xTurn == true){
+                    board[row][col] = Mark.X;
+                    xTurn = false;
+                    return true;
+                }
+                else {
+                    board[row][col] = Mark.O;
+                    xTurn = true;
+                    return true;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        else{
+            return false; 
+        }
     }
 	
     private boolean isValidSquare(int row, int col) {
         
         /* Return TRUE if the specified location is within the bounds of the board */
-        
+        if((row < width) && (row >=0) && (col>=0) && (col< width)) {
+            return true;
+        }
+        else {
+            return false;
+        }
         // INSERT YOUR CODE HERE
 
-        return false; // remove this line later!
         
     }
 	
     private boolean isSquareMarked(int row, int col) {
         
         /* Return TRUE if the square at specified location is marked */
-        
+        if(this.board[row][col] == Mark.EMPTY){
+            return false;
+        }
+        else{
+            return true;
+        }
         // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
             
     }
 	
@@ -118,8 +151,8 @@ public class TicTacToeModel {
         /* Return the mark from the square at the specified location */
         
         // INSERT YOUR CODE HERE
-
-        return null; // remove this line later!
+        Mark returnMark = board[row][col];
+        return returnMark;
             
     }
 	
@@ -130,8 +163,18 @@ public class TicTacToeModel {
            value */
         
         // INSERT YOUR CODE HERE
-
-        return null; // remove this line later!
+        if(isMarkWin(Mark.X) == true) {
+            return Result.X;
+        } 
+        else if(isMarkWin(Mark.O) == true) {
+            return Result.O;
+        }
+        else if(isTie()) {
+            return Result.TIE;
+        }
+        else{
+            return Result.NONE;
+        }
         
     }
 	
@@ -141,6 +184,61 @@ public class TicTacToeModel {
            winner */
         
         // INSERT YOUR CODE HERE
+            for(int row = 0; row<this.width;row++){
+                counter = 0;
+                for(int col = 0;col<this.width;col++){
+                    if(this.board[row][col] == mark){
+                        counter++;
+                    }
+                }
+              
+                if(counter == this.width){
+                    return true;
+                    
+                }
+            }
+
+
+            
+            for(int col = 0; col<this.width;col++){
+                counter = 0;
+                for(int row = 0; row<this.width;row++){
+                    if(this.board[row][col] == mark){
+                        counter++;
+                    }
+                }
+            
+                if(counter == this.width){
+                    return true;
+                    
+                }
+            }
+
+            counter = 0;
+            for(int i = 0; i<this.width;i++){
+                
+                if(this.board[i][i] == mark){
+                    counter++;
+                }
+            
+                if(counter == this.width){
+                    return true;
+                    
+                }
+            }
+            counter = 0;
+            for(int i = 0; i<this.width;i++){
+                
+                int j = (this.width -1)-i;
+                if(this.board[i][j] == mark){
+                    counter++;
+                }
+
+                if(counter == this.width){
+                    return true;
+                    
+                }
+            }
 
         return false; // remove this line later!
 
@@ -149,10 +247,21 @@ public class TicTacToeModel {
     private boolean isTie() {
         
         /* Check the squares of the board to see if the game is a tie */
-        
-        // INSERT YOUR CODE HERE
-
-        return false; // remove this line later!
+        int numSquares = width * width;
+        int numSquaresMarked = 0;
+        for(int col = 0; col<this.width;col++){
+            for(int row = 0; row<this.width;++row){
+                if(this.board[row][col] != Mark.EMPTY){
+                    numSquaresMarked++;
+                }
+            }
+        }
+        if (numSquaresMarked == numSquares){
+            return true;
+        }
+        else{
+            return false;
+        }
         
     }
 
@@ -188,7 +297,20 @@ public class TicTacToeModel {
         /* Output the board contents as a string (see examples) */
         
         // INSERT YOUR CODE HERE
-        
+        for (int i = 0; i<this.width; i++){
+            output.append(i);
+        }
+        output.append("\n");
+        for (int j = 0; j<this.width; j++){
+            output.append(j);
+            output.append(" ");
+            for (int h = 0;h<this.width; h++){
+              
+                output.append(board[j][h]);
+
+            }
+            output.append("\n");
+        }
         return output.toString();
         
     }
