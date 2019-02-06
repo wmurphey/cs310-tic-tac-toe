@@ -163,10 +163,10 @@ public class TicTacToeModel {
            value */
         
         // INSERT YOUR CODE HERE
-        if(isMarkWin(Mark.X) == true) {
+        if(isMarkWin(Mark.X)) {
             return Result.X;
         } 
-        else if(isMarkWin(Mark.O) == true) {
+        else if(isMarkWin(Mark.O)) {
             return Result.O;
         }
         else if(isTie()) {
@@ -183,7 +183,6 @@ public class TicTacToeModel {
         /* Check the squares of the board to see if the specified mark is the
            winner */
         
-        // INSERT YOUR CODE HERE
             for(int row = 0; row<this.width;row++){
                 counter = 0;
                 for(int col = 0;col<this.width;col++){
@@ -240,7 +239,7 @@ public class TicTacToeModel {
                 }
             }
 
-        return false; // remove this line later!
+        return false; 
 
     }
 	

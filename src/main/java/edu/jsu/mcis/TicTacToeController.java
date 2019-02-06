@@ -1,6 +1,9 @@
 package edu.jsu.mcis;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 
-public class TicTacToeController {
+public class TicTacToeController implements ActionListener {
 
     private final TicTacToeModel model;
     private final TicTacToeView view;
@@ -12,37 +15,32 @@ public class TicTacToeController {
         /* Initialize model, view, and width */
 
         model = new TicTacToeModel(width);
-        view = new TicTacToeView();
+        view = new TicTacToeView(this, width);
         
     }
 
-    public void start() {
+    public String getMarkAsString(int row, int col) {        
+        return (model.getMark(row, col).toString());        
+    }
     
-        /* MAIN LOOP (repeats until game is over) */
-
-        /* Display the board using the View's "showBoard()", then use
-           "getNextMove()" to get the next move from the player.  Enter
-           the move (using the Model's "makeMark()", or display an error
-           using the View's "showInputError()" if the move is invalid. */
-        
-        // INSERT YOUR CODE HERE
-        while(model.isGameover() == false){
-            view.showBoard(model.toString());
-            TicTacToeMove Move = view.getNextMove(model.isXTurn());
-            if (model.makeMark(Move.getRow(), Move.getCol())){
-                
-            }
-            else{
-                view.showInputError();
-            }
-        }
-        
-        /* After the game is over, show the final board and the winner */
-
-        view.showBoard(model.toString());
-
-        view.showResult(model.getResult().toString());
-        
+    public TicTacToeView getView() {        
+        return view;        
     }
 
+    @Override
+    public void actionPerformed(ActionEvent event) {
+    JButton button = (JButton)event.getSource();
+    int row = (int) (button.getName().charAt(6) - 48);
+    int col = (int) (button.getName().charAt(7) - 48);
+    if(!model.isGameover())
+    {
+        model.makeMark(row, col);
+        button.setText(model.getMark(row, col).toString());
+        if(model.getResult().toString() == "X" || model.getResult().toString() == "O" || model.getResult().toString() == "TIE") 
+        {
+            view.showResult(model.getResult().toString().toUpperCase());
+        }
+    }
+
+    }
 }
